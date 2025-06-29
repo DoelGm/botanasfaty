@@ -1,0 +1,15 @@
+@keyframes textShine {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .animate-text-shine {
+    background-size: 200% auto;
+    animation: textShine 3s linear infinite;
+  }
+  @keyframes pulseSlow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+  .animate-pulse-slow {
+    animation: pulseSlow 2s infinite;
+  }
