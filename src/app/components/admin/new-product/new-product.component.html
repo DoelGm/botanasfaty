@@ -1,0 +1,114 @@
+<section class="mt-3 pt-5">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="bg-stone-50 p-6 border-1 border-cyan-200 rounded-xl shadow">
+
+      <h1 class="text-2xl font-bold text-gray-800 mb-6">Nuevo Producto</h1>
+
+      <!-- Mensaje de éxito -->
+      <div *ngIf="successMessage" class="mb-4 p-4 rounded bg-green-100 text-green-800 flex justify-between items-center">
+        {{ successMessage }}
+        <button (click)="successMessage = null" class="text-green-800 hover:text-green-900">
+          ✕
+        </button>
+      </div>
+
+      <form (ngSubmit)="addProduct()" #productForm="ngForm" enctype="multipart/form-data">
+        <!-- Nombre -->
+        <div class="mb-5">
+          <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+          <input type="text" id="name" name="name" requicyan [(ngModel)]="product.name"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Gorra negra" />
+        </div>
+
+        <!-- Descripción -->
+        <div class="mb-5">
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+          <quill-editor [(ngModel)]="product.description" name="description"
+            placeholder="Escribe la descripción del producto..."
+            class="w-full rounded-lg shadow-sm">
+          </quill-editor>
+        </div>
+
+        <!-- Imágenes -->
+        <div class="mb-5">
+          <label class="block font-semibold text-gray-700 mb-2">Imágenes del producto</label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm text-cyan-600 font-medium mb-1">Imagen principal *</label>
+              <input #mainImageInput type="file" id="mainImage" requicyan (change)="onImageChange($event, 0)"
+                accept="image/*"
+                class="block w-full text-sm border border-gray-300 rounded-md shadow-sm px-3 py-2" />
+              <small class="text-xs text-cyan-600">Será la imagen destacada del producto</small>
+            </div>
+            <div>
+              <label class="block text-sm text-cyan-600 font-medium mb-1">Imagen secundaria 1</label>
+              <input #secondaryImage1Input type="file" id="secondaryImage1" (change)="onImageChange($event, 1)"
+                accept="image/*"
+                class="block w-full text-sm border border-gray-300 rounded-md shadow-sm px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm text-cyan-600 font-medium mb-1">Imagen secundaria 2</label>
+              <input #secondaryImage2Input type="file" id="secondaryImage2" (change)="onImageChange($event, 2)"
+                accept="image/*"
+                class="block w-full text-sm border border-gray-300 rounded-md shadow-sm px-3 py-2" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Vistas previas -->
+        <div *ngIf="imagePreviews.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          <div *ngFor="let img of imagePreviews" class="text-center">
+            <img [src]="img" class="rounded-lg shadow w-auto h-36 mx-auto object-cover" alt="Vista previa">
+          </div>
+        </div>
+
+        <!-- Categoría -->
+        <div class="mb-5">
+          <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Categoría *</label>
+          <select name="category" [(ngModel)]="product.category_id" requicyan
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="" disabled selected>Selecciona una categoría</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+
+        <!-- Stock -->
+        <div class="mb-5 w-1/2 md:w-1/4">
+          <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+          <input type="number" name="stock" id="stock" [(ngModel)]="product.stock" min="0"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm" placeholder="0" />
+        </div>
+
+        <!-- Precio y descuento -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Precio *</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2.5 text-gray-500">$</span>
+              <input type="number" id="price" name="price" requicyan [(ngModel)]="product.price" step="0.01" min="0"
+                class="pl-7 pr-4 py-2 w-full border border-gray-300 rounded-lg shadow-sm" placeholder="0.00" />
+            </div>
+          </div>
+          <div>
+            <label for="discount" class="block text-sm font-medium text-gray-700 mb-1">Precio de comparación</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2.5 text-gray-500">$</span>
+              <input type="number" id="discount" name="discount" [(ngModel)]="product.discount" step="0.01" min="0"
+                class="pl-7 pr-4 py-2 w-full border border-gray-300 rounded-lg shadow-sm" placeholder="0.00" />
+            </div>
+            <small class="text-xs text-gray-500">Se mostrará como precio tachado si aplica descuento</small>
+          </div>
+        </div>
+
+        <!-- Botón -->
+        <div class="mt-6">
+          <button type="submit"
+            class="px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition disabled:opacity-50"
+            [disabled]="productForm.invalid">
+            Crear Producto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

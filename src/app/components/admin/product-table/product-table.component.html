@@ -1,0 +1,258 @@
+<section class="mt-8 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div *ngIf="!isEditing" class="bg-white rounded-lg shadow p-6">
+      <h1 class="text-2xl font-bold mb-4">Lista de Productos</h1>
+
+      <!-- Loading -->
+      <div *ngIf="isLoading" class="text-center py-6">
+        <div class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+        <p class="text-gray-500">Cargando productos...</p>
+      </div>
+
+      <!-- Alerts -->
+      <div *ngIf="errorMessage" class="bg-red-100 text-red-700 px-4 py-3 rounded mb-4 relative">
+        {{ errorMessage }}
+        <button class="absolute top-2 right-2 text-red-700" (click)="dismissAlert('error')">&times;</button>
+      </div>
+
+      <div *ngIf="successMessage" class="bg-green-100 text-green-700 px-4 py-3 rounded mb-4 relative">
+        {{ successMessage }}
+        <button class="absolute top-2 right-2 text-green-700" (click)="dismissAlert('success')">&times;</button>
+      </div>
+
+      <!-- Tabla -->
+      <div *ngIf="!isEditing && !isLoading" class="overflow-x-auto">
+        <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+          <table class="min-w-full text-sm text-gray-700">
+            <thead class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800 uppercase text-xs font-bold">
+              <tr>
+                <th class="p-3 text-left">#</th>
+                <th class="p-3 text-left">Nombre</th>
+                <th class="p-3 text-left">Descripción</th>
+                <th class="p-3 text-center">Precio</th>
+                <th class="p-3 text-center">Precio Comparación</th>
+                <th class="p-3 text-center">Stock</th>
+                <th class="p-3 text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products | paginate: { itemsPerPage: itemsPerPage, currentPage: p }"
+                  class="border-t hover:bg-gray-50 transition-all duration-200">
+                <td class="p-3">{{ product.id }}</td>
+                <td class="p-3 font-medium">{{ product.name }}</td>
+                <td class="p-3 text-gray-600 max-w-xs truncate" [innerHTML]="product.description"></td>
+                <td class="p-3 text-center">
+                  <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold text-xs">
+                    {{ product.price | currency }}
+                  </span>
+                </td>
+                <td class="p-3 text-center">
+                  <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full font-semibold text-xs">
+                    {{ product.discount | currency }}
+                  </span>
+                </td>
+                <td class="p-3 text-center">
+                  <span [ngClass]="product.stock > 0 ? 'text-green-600' : 'text-red-500'" class="font-semibold">
+                    {{ product.stock }}
+                  </span>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-2">
+                    <button class="bg-indigo-500 text-white text-xs px-3 py-1 rounded hover:bg-indigo-600 transition"
+                            (click)="prepareEdit(product)">
+                      ✏️ Editar
+                    </button>
+                    <button class="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600 transition"
+                            (click)="prepareDelete(product)">
+                      🗑️ Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Paginación -->
+        <div class="mt-4 text-center">
+          <pagination-controls
+            (pageChange)="p = $event"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            class="inline-block">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+
+        <!-- Formulario de edición -->
+        <div *ngIf="isEditing" class="bg-white rounded-lg shadow p-6 mt-8">
+          <h2 class="text-xl font-bold mb-6">Editar Producto: {{ productToEdit.name }}</h2>
+          <div *ngIf="isEditing" class="bg-white rounded-lg shadow p-6 mt-8">
+      <h2 class="text-xl font-bold mb-6">Editar Producto: {{ productToEdit.name }}</h2>
+
+      <form (ngSubmit)="updateProduct()" #editForm="ngForm" enctype="multipart/form-data" class="space-y-6">
+
+        <!-- Nombre -->
+        <div>
+          <label for="editName" class="block font-medium mb-1">Nombre</label>
+          <input
+            id="editName"
+            type="text"
+            name="name"
+            [(ngModel)]="productToEdit.name"
+            required
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        <!-- Descripción con Quill -->
+        <div>
+          <label for="editDescription" class="block font-medium mb-1">Descripción</label>
+          <quill-editor
+            [(ngModel)]="productToEdit.description"
+            name="description"
+            [required]="true"
+            class="bg-white border border-gray-300 rounded overflow-hidden"
+            style="min-height: 200px"
+          ></quill-editor>
+        </div>
+
+        <!-- Imágenes -->
+        <div>
+          <label class="block font-bold mb-2">Imágenes del producto</label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div *ngFor="let imgIndex of [0, 1, 2]; let i = index">
+              <label [for]="'imageInput' + i" class="block text-sm font-medium text-gray-700 mb-1">
+                {{ i === 0 ? 'Imagen principal*' : 'Imagen secundaria ' + i }}
+              </label>
+              <input
+                [id]="'imageInput' + i"
+                class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                type="file"
+                accept="image/*"
+                (change)="onImageChange($event, i, productToEdit.id)"
+              />
+              <small class="text-gray-500">Deja vacío si no deseas cambiarla</small>
+
+              <!-- Vista previa -->
+              <div class="mt-2 text-center">
+                <ng-container *ngIf="(imagePreviews[productToEdit.id]?.[i] || productToEdit.images[i]?.cloudinary_url); else noImage">
+                  <img
+                    [src]="imagePreviews[productToEdit.id]?.[i] || productToEdit.images[i]?.cloudinary_url"
+                    class="mx-auto h-36 w-auto object-cover rounded shadow"
+                  />
+                  <p class="text-sm text-gray-500 mt-1">
+                    {{ imagePreviews[productToEdit.id]?.[i] ? 'Nueva imagen' : 'Imagen actual' }}
+                  </p>
+                </ng-container>
+                <ng-template #noImage>
+                  <p class="text-gray-400 italic">Sin imagen</p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categoría -->
+        <div>
+          <label for="editCategory" class="block font-medium mb-1">Categoría*</label>
+          <select
+            id="editCategory"
+            name="category"
+            [(ngModel)]="productToEdit.category_id"
+            required
+            class="w-full border border-gray-300 rounded px-3 py-2"
+          >
+            <option value="" disabled>Selecciona una categoría</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+
+        <!-- Stock y Precios -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label for="editStock" class="block font-medium mb-1">Stock</label>
+            <input
+              id="editStock"
+              type="number"
+              name="stock"
+              [(ngModel)]="productToEdit.stock"
+              min="0"
+              required
+              class="w-full border border-gray-300 rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label for="editPrice" class="block font-medium mb-1">Precio*</label>
+            <div class="flex items-center gap-1">
+              <span class="text-gray-600">$</span>
+              <input
+                id="editPrice"
+                type="number"
+                name="price"
+                [(ngModel)]="productToEdit.price"
+                min="0"
+                step="0.01"
+                required
+                class="w-full border border-gray-300 rounded px-3 py-2"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="editDiscount" class="block font-medium mb-1">Precio de comparación</label>
+            <div class="flex items-center gap-1">
+              <span class="text-gray-600">$</span>
+              <input
+                id="editDiscount"
+                type="number"
+                name="discount"
+                [(ngModel)]="productToEdit.discount"
+                min="0"
+                step="0.01"
+                class="w-full border border-gray-300 rounded px-3 py-2"
+              />
+            </div>
+            <p class="text-sm text-gray-500 mt-1">Precio original para mostrar descuentos</p>
+            <p *ngIf="productToEdit.discount > productToEdit.price" class="text-sm text-red-600">
+              {{ calculateDiscount(productToEdit.price, productToEdit.discount) }}% de descuento
+            </p>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="flex gap-4 mt-4">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
+            [disabled]="editForm.invalid">
+            💾 Guardar Cambios
+          </button>
+          <button
+            type="button"
+            class="bg-gray-300 text-gray-800 px-5 py-2 rounded hover:bg-gray-400 transition"
+            (click)="cancelEdit()">
+            ✖️ Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    </div>
+  </div>
+</section>
+    <!-- Modal -->
+    <div *ngIf="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+        <div class="bg-red-600 text-white px-6 py-4 rounded-t-lg">
+          <h3 class="text-lg font-semibold">Confirmar eliminación</h3>
+        </div>
+        <div class="p-6 text-gray-800">
+          ¿Estás seguro de que deseas eliminar el producto
+          <span class="font-bold">"{{ productToDelete?.name }}"</span>? Esta acción no se puede deshacer.
+        </div>
+        <div class="px-6 py-4 flex justify-end gap-2">
+          <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300" (click)="showDeleteModal = false">Cancelar</button>
+          <button class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" (click)="confirmDelete()">Eliminar</button>
+        </div>
+      </div>
+    </div>
