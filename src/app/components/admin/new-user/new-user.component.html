@@ -1,0 +1,71 @@
+<section class="mt-10 px-4 md:px-10 ">
+  <div class="max-w-3xl mx-auto bg-white rounded-2xl bg-stone-50 border-1 border-cyan-200 shadow-md p-8">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Nuevo Usuario</h1>
+
+    <!-- Mensaje de éxito -->
+    <div *ngIf="successMessage" class="bg-green-100 text-green-800 p-4 rounded-md mb-4 relative">
+      {{ successMessage }}
+      <button (click)="successMessage = null" class="absolute top-2 right-3 text-green-700 hover:text-green-900">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="bg-red-100 text-red-800 p-4 rounded-md mb-4 relative">
+      {{ errorMessage }}
+      <button (click)="errorMessage = null" class="absolute top-2 right-3 text-red-700 hover:text-red-900">
+        &times;
+      </button>
+    </div>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="addNewUser()" #newUserForm="ngForm" class="space-y-6">
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Nombre completo</label>
+        <input type="text" id="name" name="name" [(ngModel)]="newUser.name"
+          class="mt-1 block w-full rounded-lg border border-gray-300 p-2.5 focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="Juan Pérez" required />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+        <input type="email" id="email" name="email" [(ngModel)]="newUser.email"
+          class="mt-1 block w-full rounded-lg border border-gray-300 p-2.5 focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="correo@ejemplo.com" required />
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <input type="password" id="password" name="password" [(ngModel)]="newUser.password" minlength="8"
+          class="mt-1 block w-full rounded-lg border border-gray-300 p-2.5 focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="********" required />
+      </div>
+
+      <div>
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="newUser.confirmPassword" minlength="8"
+          class="mt-1 block w-full rounded-lg border border-gray-300 p-2.5 focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="********" required />
+      </div>
+
+      <!-- Descomenta si quieres mostrar el selector de rol -->
+
+      <div>
+        <label for="role" class="block text-sm font-medium text-gray-700">Rol</label>
+        <select id="role" name="role" [(ngModel)]="newUser.role"
+          class="mt-1 block w-full rounded-lg border border-gray-300 p-2.5 focus:ring-indigo-500 focus:border-indigo-500" required>
+          <option disabled selected>Selecciona un rol</option>
+          <option value="admin">Administrador</option>
+          <option value="user">Usuario</option>
+        </select>
+      </div>
+
+
+      <button type="submit"
+        class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition"
+        [disabled]="newUserForm.invalid">
+        Crear Usuario
+      </button>
+    </form>
+  </div>
+</section>

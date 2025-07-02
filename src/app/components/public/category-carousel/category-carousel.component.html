@@ -1,4 +1,8 @@
-<div *ngIf="similarProducts.length >= 3 && !isLoading" class="bg-[#FFF6E6] py-6">
+<h1 class="text-3xl font-bold text-center mb-6 text-[#4B2E18]">
+    Productos Estrella
+</h1>
+ 
+<div *ngIf="similarProducts.length >= 0 && !isLoading" class="bg-[#FFF6E6] py-6">
   <owl-carousel-o [options]="customOptions">
     <ng-container *ngFor="let product of similarProducts">
       <ng-template carouselSlide>
@@ -6,10 +10,10 @@
           class="rounded-2xl bg-white shadow-xl m-2 overflow-hidden transition transform hover:scale-105 duration-300 cursor-pointer border-4 border-[#FF6A00]"
           (click)="navigateToProduct(product.id)">
           <img
-            *ngIf="product.images?.length > 0"
-            [src]="product.images[0]?.cloudinary_url || '/imgs/default.jpg'"
-            alt="{{ product.name }}"
-            class="w-full h-52 object-cover border-b-4 border-[#FF3CAC]" />
+  [src]="product.images?.[0]?.cloudinary_url || '/imgs/default.jpg'"
+  alt="{{ product.name }}"
+  class="w-full h-52 object-cover border-b-4 border-[#FF3CAC]" />
+
           <div class="p-4 bg-[#FFF6E6]">
             <h5 class="text-xl font-bold text-[#4B2E18] mb-1">{{ product.name }}</h5>
             <p class="text-[#005DFF] font-extrabold text-lg">${{ product.price }}</p>

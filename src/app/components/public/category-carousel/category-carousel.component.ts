@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { Router } from '@angular/router';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { ProductService } from '../../../services/product.service';
+import { CategoriesService } from '../../../services/categories.service';
 
 @Component({
   selector: 'app-category-carousel',
@@ -10,7 +12,7 @@ import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
   templateUrl: './category-carousel.component.html',
   styleUrl: './category-carousel.component.css'
 })
-export class ProductComponent implements OnInit, OnDestroy {
+export class CategoryCarouselComponent implements OnInit, OnDestroy {
   product: any = [];
   category: any = {};
   isLoading: boolean = true;
@@ -42,7 +44,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
 ngOnInit(): void {
-  const fixedCategoryId = 5; // <-- Cambia esto por la categoría deseada
+  const fixedCategoryId = 1; // <-- Cambia esto por la categoría deseada
   this.loadCategoryData(fixedCategoryId);
 }
 
