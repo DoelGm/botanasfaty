@@ -1,1 +1,47 @@
-<p>card-product works!</p>
+<div class="bg-[#FFF6E6] p-8 my-8 rounded-2xl shadow-lg">
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#FF6A00]"></div>
+    <p class="mt-4 text-lg font-medium text-[#4B2E18]">Cargando productos...</p>
+  </div>
+
+  <!-- Mensaje de alerta -->
+  <div *ngIf="!isLoading && alertMessage" class="mb-8">
+    <div class="bg-[#FFD100] border-l-4 border-[#FF6A00] p-4 rounded-lg">
+      <h4 class="text-lg font-bold text-[#4B2E18] text-center">{{ alertMessage }}</h4>
+    </div>
+  </div>
+
+  <!-- Productos -->
+  <div *ngIf="!isLoading && products.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div 
+      *ngFor="let product of products"
+      class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border-2 border-transparent hover:border-[#FF3CAC]"
+      [routerLink]="['/product', product.id]"
+    >
+      <!-- Imagen del producto -->
+      <div class="h-48 overflow-hidden">
+        <img
+          [src]="product.image_urls?.[0] || '/imgs/default.jpg'"
+          class="w-full h-full object-cover"
+          alt="{{ product.name }}"
+        />
+      </div>
+
+      <!-- Contenido de la tarjeta -->
+      <div class="p-4 text-center">
+        <h5 class="text-xl font-bold text-[#FF6A00] mb-2">{{ product.name }}</h5>
+        
+        <div class="min-h-[40px]">
+          <p class="text-sm text-[#4B2E18] line-clamp-2" [innerHTML]="product.description"></p>
+        </div>
+
+        <p class="mt-4">
+          <span class="inline-block px-3 py-1 rounded-full bg-[#B8FF00] text-[#4B2E18] font-bold text-lg">
+            {{ product.price | currency }}
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,170 @@
-<h1 class="text-4xl p-4 font-extrabold text-center text-[#FF6A00] ">
-    Nuestros Productos
-</h1>
+
+<section class="mt-5 p-3 md:p-8 bg-[#FFF6E6]">
+  <div class="container mx-auto flex flex-col md:flex-row gap-8">
+    
+   <!-- Carrusel de Imágenes -->
+<div class="w-full md:w-1/2 bg-[#693d1b] rounded-3xl p-4 md:p-6 shadow-xl">
+  <div id="carouselExampleIndicators" class="carousel slide">
+    
+    <!-- Indicadores solo si hay varias imágenes -->
+    <div class="carousel-indicators" *ngIf="product.images?.length > 1">
+      <button
+        *ngFor="let img of product.images; let i = index"
+        type="button"
+        [attr.data-bs-target]="'#carouselExampleIndicators'"
+        [attr.data-bs-slide-to]="i"
+        [class.active]="i === 0"
+        [attr.aria-current]="i === 0 ? 'true' : null"
+        [attr.aria-label]="'Slide ' + (i + 1)">
+      </button>
+    </div>
+
+    <div class="carousel-inner rounded-xl overflow-hidden">
+      <!-- Si hay imágenes -->
+      <div
+        *ngFor="let img of product.images; let i = index"
+        class="carousel-item"
+        [class.active]="i === 0">
+        <img [src]="img.cloudinary_url" class="w-full h-[300px] object-cover" alt="Imagen del producto {{product.id}}">
+      </div>
+
+      <!-- Si NO hay imágenes, mostrar una imagen por defecto -->
+      <div *ngIf="!product.images || product.images.length === 0" class="carousel-item active">
+        <img src="/imgs/default.jpg" class="w-full h-[300px] object-cover" alt="Imagen no disponible">
+      </div>
+    </div>
+
+    <!-- Controles solo si hay más de una imagen -->
+    <button *ngIf="product.images?.length > 1"
+      class="carousel-control-prev" type="button"
+      data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+
+    <button *ngIf="product.images?.length > 1"
+      class="carousel-control-next" type="button"
+      data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+</div>
+
+
+    <!-- Detalles del Producto -->
+    <div class="w-full md:w-1/2 bg-[#693d1b] text-white rounded-3xl p-6 shadow-xl">
+      <h1 class="text-3xl font-bold">{{ product.name }}</h1>
+
+      <h1 *ngIf="isLoading" class="placeholder-glow">
+        <span class="placeholder block h-6 bg-amber-900 w-full rounded"></span>
+      </h1>
+
+      <div class="mt-6 flex flex-col md:flex-row justify-between items-start gap-6">
+        <div>
+          <p class="text-2xl text-[#B8FF00]" [class.opacity-0]="isLoading" [class.opacity-100]="!isLoading">
+            ${{ product.price }}
+          </p>
+          <p class="text-sm line-through text-red-500" [class.opacity-0]="isLoading" [class.opacity-100]="!isLoading">
+            ${{ product.discount }}
+          </p>
+        </div>
+        <p class="text-sm mt-2 md:mt-0 text-right" [class.opacity-0]="isLoading" [class.opacity-100]="!isLoading">
+          IVA incluido
+        </p>
+      </div>
+
+      
+
+      <!-- Descripción -->
+      <div class="mt-6">
+        <p *ngIf="!isLoading" class="text-lg font-bold mb-2">Descripción:</p>
+        <div *ngIf="isLoading" class="placeholder-glow">
+          <span class="placeholder block h-4 w-full bg-amber-900 mb-2 rounded"></span>
+        </div>
+        <div [innerHTML]="product.description"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-10 bg-[#FFF6E6]">
+  <div class="container mx-auto">
+    <h1 class="text-4xl font-extrabold text-center mb-8 text-[#4B2E18] relative">
+      <span class="relative z-10 px-4 bg-[#FFF6E6]">✨ Productos Similares ✨</span>
+      <span class="absolute left-0 right-0 top-1/2 h-1 bg-gradient-to-r from-[#FF6A00] via-[#FF3CAC] to-[#B8FF00] z-0"></span>
+    </h1>
+
+    <!-- Mensaje de carga -->
+<div *ngIf="isLoading" class="flex flex-col items-center justify-center py-12">
+  <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#FF6A00]"></div>
+  <p class="mt-4 text-lg font-medium text-[#4B2E18]">Cargando productos...</p>
+</div>
+
+<!-- Mensaje si no hay productos -->
+<div *ngIf="!isLoading && similarProducts.length === 0" class="text-center py-12">
+  <p class="text-2xl font-bold text-[#4B2E18] mb-4">No hay productos disponibles 🥺</p>
+  <img src="/imgs/sad.svg" alt="Triste" class="w-24 mx-auto opacity-70" />
+</div>
+
+    
+
+    <div *ngIf="similarProducts.length >= 0 && !isLoading" class="py-8">
+      <owl-carousel-o [options]="customOptions">
+        <ng-container *ngFor="let product of similarProducts">
+          <ng-template carouselSlide>
+            <div
+              class="relative rounded-3xl bg-white m-4 overflow-hidden transition-all duration-500 cursor-pointer shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_-10px_rgba(255,106,0,0.3)] hover:-translate-y-2 group"
+              (click)="navigateToProduct(product.id)">
+              
+              <!-- Etiqueta -->
+              <div class="absolute top-4 right-4 z-10 rotate-12 bg-[#FF3CAC] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                ¡NUEVO!
+              </div>
+              
+              <!-- Imagen -->
+              <div class="relative overflow-hidden h-64">
+                <img
+                  [src]="product.images?.[0]?.cloudinary_url || '/imgs/default.jpg'"
+                  alt="{{ product.name }}"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#4B2E18]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+
+              <!-- Contenido -->
+              <div class="p-5 bg-gradient-to-br from-[#FFF6E6] to-white">
+                <h5 class="text-2xl font-bold text-[#4B2E18] mb-2 truncate">{{ product.name }}</h5>
+                <p class="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6A00] to-[#FF3CAC] font-black text-2xl mb-3">
+                  ${{ product.price }}
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="inline-block px-4 py-1 text-sm font-bold rounded-full bg-[#B8FF00] text-[#4B2E18] shadow-md">
+                    ¡Disponible!
+                  </span>
+                  <button class="text-[#005DFF] hover:text-[#FF6A00] transition-colors font-bold flex items-center">
+                    Ver más <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+
+    <!-- Layout simple si hay menos de 3 -->
+    <div *ngIf="similarProducts.length > 0 && similarProducts.length < 3 && !isLoading" class="flex flex-wrap justify-center gap-6">
+      <div *ngFor="let product of similarProducts" class="w-full md:w-1/3">
+        <!-- Puedes reutilizar la misma tarjeta de arriba si deseas -->
+        <!-- O aplicar versión más compacta aquí -->
+      </div>
+    </div>
+
+    <!-- Si no hay productos -->
+    <div *ngIf="similarProducts && similarProducts.length === 0 && !isLoading"
+         class="mt-6 text-center text-gray-600 font-semibold">
+      No hay productos similares disponibles.
+    </div>
+  </div>
+</section>

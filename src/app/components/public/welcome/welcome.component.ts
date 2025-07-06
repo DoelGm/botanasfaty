@@ -8,6 +8,7 @@ import { initFlowbite } from 'flowbite';
 })
 export class WelcomeComponent implements OnInit {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
