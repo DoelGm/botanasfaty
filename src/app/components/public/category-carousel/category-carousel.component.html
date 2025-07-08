@@ -1,65 +1,83 @@
-<h1 class="text-4xl font-extrabold text-center mb-8 text-[#4B2E18] relative">
-  <span class="relative z-10 px-4 bg-[#FFF6E6]">✨ Productos Estrella ✨</span>
-  <span class="absolute left-0 right-0 top-1/2 h-1 bg-gradient-to-r from-[#FF6A00] via-[#FF3CAC] to-[#B8FF00] z-0"></span>
+<!-- Título con efecto arcoíris psicodélico -->
+<h1 class="text-5xl font-extrabold text-center mb-12 relative animate-text-gradient">
+  <span class="relative z-10 px-6 py-2 bg-[#FF6A00] rounded-full border-4 border-[#FF6A00] shadow-lg bg-clip-text text-transparent">
+    PRODUCTOS ESTRELLA 
+  </span>
+  
 </h1>
 
-<!-- Mensaje de carga -->
-<div *ngIf="isLoading" class="flex flex-col items-center justify-center py-12">
-  <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#FF6A00]"></div>
-  <p class="mt-4 text-lg font-medium text-[#4B2E18]">Cargando productos...</p>
+<!-- Mensaje de carga maximalista -->
+<div *ngIf="isLoading" class="flex flex-col items-center justify-center py-16 animate-fade-in">
+  <div class="relative w-24 h-24 mb-6">
+    <div class="absolute inset-0 rounded-full border-8 border-t-[#FF6A00] border-r-[#FF3CAC] border-b-[#B8FF00] border-l-[#005DFF] animate-spin"></div>
+    <div class="absolute inset-3 rounded-full border-8 border-t-[#FFD100] border-r-[#FF6A00] border-b-[#FF3CAC] border-l-[#B8FF00] animate-spin-reverse"></div>
+    <div class="absolute inset-6 rounded-full border-8 border-t-[#005DFF] border-r-[#B8FF00] border-b-[#FFD100] border-l-[#FF6A00] animate-spin"></div>
+  </div>
+  <p class="text-2xl font-bold text-[#4B2E18] animate-pulse bg-gradient-to-r from-[#FF6A00] via-[#FF3CAC] to-[#B8FF00] bg-clip-text ">
+    Cargando productos estrella...
+  </p>
 </div>
 
-<!-- Mensaje si no hay productos -->
-<div *ngIf="!isLoading && similarProducts.length === 0" class="text-center py-12">
-  <p class="text-2xl font-bold text-[#4B2E18] mb-4">No hay productos disponibles 🥺</p>
-  <img src="/imgs/sad.svg" alt="Triste" class="w-24 mx-auto opacity-70" />
+<!-- Mensaje si no hay productos con animación -->
+<div *ngIf="!isLoading && similarProducts.length === 0" class="text-center py-16 animate-bounce-in">
+  <div class="inline-block bg-gradient-to-r from-[#FF6A00] to-[#FF3CAC] text-white px-8 py-6 rounded-3xl shadow-xl transform rotate-1">
+    <p class="text-3xl font-extrabold mb-4">¡Ups! No hay productos estrella 🍭</p>
+    <img src="/imgs/sad.svg" alt="Triste" class="w-28 mx-auto " />
+  </div>
 </div>
 
-<!-- Carrusel si hay productos -->
-<div *ngIf="!isLoading && similarProducts.length > 0" class="py-8">
+<!-- Carrusel con efectos maximalistas -->
+<div *ngIf="!isLoading && similarProducts.length > 0" class="py-8 relative">
+  <!-- Elementos decorativos flotantes -->
+  <div class="absolute -top-10 left-10 w-20 h-20 bg-[#FF3CAC]/20 rounded-full animate-float-1"></div>
+  <div class="absolute bottom-10 right-10 w-24 h-24 bg-[#B8FF00]/20 rounded-full animate-float-2"></div>
+  
   <owl-carousel-o [options]="customOptions">
-    <ng-container *ngFor="let product of similarProducts">
+    <ng-container *ngFor="let product of similarProducts; let i = index">
       <ng-template carouselSlide>
         <div
-          class="rounded-3xl bg-white m-4 overflow-hidden transition-all duration-500 cursor-pointer shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_-10px_rgba(255,106,0,0.3)] hover:-translate-y-2 group"
+          class="rounded-3xl bg-white m-4 overflow-hidden transition-all duration-700 cursor-pointer shadow-[0_15px_30px_-10px_rgba(0,0,0,0.2)] hover:shadow-[0_25px_60px_-15px_rgba(255,106,0,0.5)] hover:-translate-y-3 group transform "
           (click)="navigateToProduct(product.id)"
+          [style.animation-delay]="i*100 + 'ms'"
         >
-          <!-- Etiqueta destacado -->
-          <div class="absolute top-4 right-4 z-10 rotate-12 bg-[#FF3CAC] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
-            ¡NUEVO!
-          </div>
 
-          <!-- Imagen -->
-          <div class="relative overflow-hidden h-64">
+          <!-- Imagen con efectos -->
+          <div class="relative overflow-hidden h-72">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#4B2E18]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
             <img
               [src]="product.images?.[0]?.cloudinary_url || '/imgs/default.jpg'"
               alt="{{ product.name }}"
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-[#4B2E18]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute inset-0 bg-[#FFD100]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay"></div>
           </div>
 
-          <!-- Contenido -->
-          <div class="p-5 bg-gradient-to-br from-[#FFF6E6] to-white">
-            <h5 class="text-2xl font-bold text-[#4B2E18] mb-2 truncate">{{ product.name }}</h5>
-            <p class="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6A00] to-[#FF3CAC] font-black text-2xl mb-3">
+          <!-- Contenido con fondo degradado -->
+          <div class="p-6 bg-gradient-to-br from-[#FFF6E6] to-white relative overflow-hidden">
+            
+            <h5 class="text-2xl font-extrabold text-[#4B2E18] mb-2 truncate group-hover:text-[#FF6A00] transition-colors">
+              {{ product.name }}
+            </h5>
+            
+            <!-- Precio con efecto de cambio de color -->
+            <p class="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6A00] to-[#FF3CAC] font-black text-3xl mb-4 group-hover:bg-gradient-to-r group-hover:from-[#B8FF00] group-hover:to-[#005DFF] transition-all duration-500">
               ${{ product.price }}
             </p>
+            
             <div class="flex justify-between items-center">
-              <span class="inline-block px-4 py-1 text-sm font-bold rounded-full bg-[#B8FF00] text-[#4B2E18] shadow-md">
-                ¡Disponible!
+              <!-- Disponibilidad con efecto de brillo -->
+              <span class="inline-block px-5 py-2 text-sm font-black rounded-full bg-gradient-to-r from-[#B8FF00] to-[#FFD100] text-[#4B2E18] shadow-md hover:shadow-[0_0_20px_5px_rgba(184,255,0,0.5)] transition-all">
+                ¡DISPONIBLE! 
               </span>
+              
+              <!-- Botón con efecto de expansión -->
               <button
-                class="text-[#005DFF] hover:text-[#FF6A00] transition-colors font-bold flex items-center"
+                class="text-[#005DFF] hover:text-[#FF6A00] font-extrabold flex items-center group/button transition-all"
                 (click)="navigateToProduct(product.id); $event.stopPropagation()"
               >
-                Ver más
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  />
+                <span class="group-hover/button:underline">Ver más</span> 
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1 group-hover/button:translate-x-2 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
               </button>
             </div>
@@ -69,3 +87,4 @@
     </ng-container>
   </owl-carousel-o>
 </div>
+

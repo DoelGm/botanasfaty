@@ -1,14 +1,81 @@
-/* Animación de carga - spinner */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
-.loader {
-  border: 6px solid #f3f3f3; /* Color claro */
-  border-top: 6px solid #FF6A00; /* Color de la parte superior */
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-}
+  @keyframes float-1 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-15px) translateX(10px); }
+  }
+  @keyframes float-2 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(10px) translateX(-10px); }
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes spin-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  @keyframes text-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes bounce-in {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+  }
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0) rotate(12deg); }
+    50% { transform: translateY(-10px) rotate(12deg); }
+  }
+  
+  .animate-float-1 { animation: float-1 6s ease-in-out infinite; }
+  .animate-float-2 { animation: float-2 5s ease-in-out infinite; }
+  .animate-spin { animation: spin 3s linear infinite; }
+  .animate-spin-reverse { animation: spin-reverse 4s linear infinite; }
+  .animate-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
+  .animate-text-gradient { 
+    background-size: 200% auto;
+    animation: text-gradient 3s linear infinite; 
+  }
+  .animate-bounce-in { animation: bounce-in 0.8s ease-out; }
+  .animate-fade-in { animation: fade-in 1s ease-out; }
+  .animate-wiggle { animation: wiggle 0.8s ease-in-out infinite; }
+  .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
+  
+  .confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #FFD100;
+    opacity: 0.8;
+    animation: confetti-fall 3s linear infinite;
+  }
+  .confetti:nth-child(1) {
+    left: 10%; animation-delay: 0s; background-color: #FF6A00;
+  }
+  .confetti:nth-child(2) {
+    left: 50%; animation-delay: 0.5s; background-color: #FF3CAC;
+  }
+  .confetti:nth-child(3) {
+    left: 90%; animation-delay: 1s; background-color: #B8FF00;
+  }
+  
+  @keyframes confetti-fall {
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
