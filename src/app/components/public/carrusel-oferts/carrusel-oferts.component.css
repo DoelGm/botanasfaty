@@ -1,0 +1,23 @@
+@keyframes dulce-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1; /* visibilidad al iniciar animación */
+  }
+  100% {
+    transform: translateY(600px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+
+.animate-dulce-fall {
+  animation-name: dulce-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  font-size: 2rem;
+  pointer-events: none;
+
+  opacity: 0; /* invisibles por defecto */
+  animation-fill-mode: forwards; /* conserva estado al terminar */
+}
+

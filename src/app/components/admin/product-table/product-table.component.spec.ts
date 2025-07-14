@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublicLayoutsComponent } from './public-layouts.component';
+import { ProductTableComponent } from './product-table.component';
 
-describe('PublicLayoutsComponent', () => {
-  let component: PublicLayoutsComponent;
-  let fixture: ComponentFixture<PublicLayoutsComponent>;
+describe('ProductTableComponent', () => {
+  let component: ProductTableComponent;
+  let fixture: ComponentFixture<ProductTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PublicLayoutsComponent]
+      imports: [ProductTableComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PublicLayoutsComponent);
+    fixture = TestBed.createComponent(ProductTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

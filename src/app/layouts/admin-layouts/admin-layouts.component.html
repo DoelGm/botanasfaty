@@ -1,1 +1,49 @@
-<p>admin-layouts works!</p>
+<app-navbar></app-navbar>
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside
+    class="w-64 bg-indigo-600 text-white p-4 space-y-4 fixed md:relative z-20 transform md:translate-x-0 transition-transform duration-200"
+    [ngClass]="{ '-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen || isLargeScreen }">
+
+    <h2 class="text-2xl font-bold mb-6">Panel</h2>
+
+    <!-- Menú tipo acordeón -->
+    <div *ngFor="let section of sidebarSections; let i = index">
+      <button
+        class="w-full flex justify-between items-center py-2 px-3 rounded hover:bg-indigo-700 focus:outline-none"
+        (click)="toggleSection(i)">
+        <span>{{ section.title }}</span>
+        <svg class="w-4 h-4 transition-transform duration-200"
+             [ngClass]="{ 'rotate-90': activeSection === i }"
+             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <ul *ngIf="activeSection === i" class="ml-4 mt-2 space-y-1 rounded-md transition-all">
+        <li *ngFor="let link of section.links">
+          <a [routerLink]="link.route"
+             class="block py-1 px-3 rounded bg-indigo-400 hover:bg-indigo-300 border-1 mb-2 border-cyan-100 text-sm">
+            {{ link.label }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <div class="flex-1 ml-0">
+    <!-- Botón móvil -->
+    <div class="md:hidden p-4">
+      <button (click)="toggleSidebar()" class="text-indigo-600 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

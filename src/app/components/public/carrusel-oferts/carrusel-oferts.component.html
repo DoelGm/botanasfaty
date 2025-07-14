@@ -1,0 +1,37 @@
+<!-- Contenedor principal -->
+<section class="relative h-[500px] bg-[#FFF6E6] overflow-hidden flex flex-col items-center justify-center">
+
+  <!-- Dulces cayendo -->
+  <ng-container *ngFor="let dulce of dulces">
+    <div
+      class="absolute text-3xl animate-dulce-fall"
+      [ngStyle]="{
+        left: dulce.left + '%',
+        animationDelay: dulce.delay + 's',
+        animationDuration: dulce.duration + 's'
+      }"
+    >
+      {{ dulce.emoji }}
+    </div>
+  </ng-container>
+
+  <!-- Productos principales -->
+  <div class="z-10 mt-10 text-center">
+    <h2 class="text-4xl font-extrabold text-[#4B2E18] mb-4">
+      ¡Productos Principales!
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
+      <div
+        *ngFor="let producto of productos"
+        class="bg-white p-4 rounded-2xl shadow-xl transform hover:-translate-y-2 transition duration-300"
+      >
+        <img
+          [src]="producto.imagen"
+          alt="{{ producto.nombre }}"
+          class="w-full h-40 object-cover rounded-xl mb-2"
+        />
+        <h3 class="text-lg font-bold text-[#FF6A00]">{{ producto.nombre }}</h3>
+      </div>
+    </div>
+  </div>
+</section>
