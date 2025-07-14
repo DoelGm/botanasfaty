@@ -1,0 +1,49 @@
+
+  @keyframes float-1 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-20px) translateX(10px); }
+  }
+  @keyframes float-2 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-15px) translateX(-15px); }
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes spin-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  @keyframes bounce-in {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0) rotate(12deg); }
+    50% { transform: translateY(-15px) rotate(12deg); }
+  }
+  
+  .animate-float-1 { animation: float-1 6s ease-in-out infinite; }
+  .animate-float-2 { animation: float-2 7s ease-in-out infinite; }
+  .animate-spin { animation: spin 3s linear infinite; }
+  .animate-spin-reverse { animation: spin-reverse 4s linear infinite; }
+  .animate-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
+  .animate-bounce-in { animation: bounce-in 0.8s ease-out; }
+  .animate-wiggle { animation: wiggle 0.8s ease-in-out infinite; }
+  .animate-bounce { animation: bounce 2s ease-in-out infinite; }
+  .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }

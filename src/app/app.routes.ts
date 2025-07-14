@@ -11,6 +11,7 @@ import { NewUserComponent } from './components/admin/new-user/new-user.component
 import { UsersTableComponent } from './components/admin/users-table/users-table.component';
 import { NewCustumerComponent } from './components/admin/new-custumer/new-custumer.component';
 import { CustumersTableComponent } from './components/admin/custumers-table/custumers-table.component';
+import { CatalogComponent } from './pages/public/catalog/catalog.component';
 
 export const routes: Routes = [
 
@@ -19,8 +20,10 @@ export const routes: Routes = [
         component: PublicLayoutsComponent,
         children: [
             {path: '', component: HomeComponent},
-            {path: 'product', component: ProductComponent},
+            {path: 'catalog', component: CatalogComponent },
             {path: 'oferts', component: OfertsComponent},
+            {path: 'product/:id', component: ProductComponent }
+
         ]
     },
     {

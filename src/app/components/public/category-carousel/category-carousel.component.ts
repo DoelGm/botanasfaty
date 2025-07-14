@@ -17,21 +17,24 @@ export class CategoryCarouselComponent implements OnInit, OnDestroy {
   category: any = {};
   isLoading: boolean = true;
   similarProducts: any = [];
+  alertMessage: string = '';
   private routeSub: any;
 
   customOptions: OwlOptions = {
-    loop: true,
-    autoplay: true,
-    margin: 10,
-    nav: true,
-    dots: true,
-    navText: ['‹', '›'],
-    responsive: {
-      0: { items: 1 },
-      600: { items: 2 },
-      1000: { items: 3 }
-    }
-  };
+  loop: true,
+  autoplay: true,
+  margin: 20, // Aumenté el margen para mejor visualización
+  nav: true,
+  dots: true,
+  navText: ['‹', '›'],
+  responsive: {
+    0: { items: 1 },
+    600: { items: 2 }, // Cambié 640 a 600 para mejor respuesta
+    1000: { items: 3 } // Cambié 1024 a 1000
+  },
+  autoplayTimeout: 3000,
+  autoplayHoverPause: true
+};
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +47,8 @@ export class CategoryCarouselComponent implements OnInit, OnDestroy {
   }
 
 ngOnInit(): void {
-  const fixedCategoryId = 1; // <-- Cambia esto por la categoría deseada
+  this.isLoading = true; // Asegurarse de que isLoading empiece en true
+  const fixedCategoryId = 1;
   this.loadCategoryData(fixedCategoryId);
 }
 
@@ -86,22 +90,24 @@ ngOnInit(): void {
 private loadSimilarProducts(categoryId: number): void {
   this.productService.getProductsByCategory(categoryId).subscribe({
     next: (products) => {
-      this.similarProducts = products; // sin filtrar
-      this.isLoading = false;
-    },
+  this.similarProducts = products;
+  this.isLoading = false;
+
+  if (products.length === 0) {
+    this.alertMessage = 'No hay productos disponibles';
+  }
+},
     error: (err) => {
       console.error('Error loading similar products', err);
       this.isLoading = false;
     }
   });
+  
 }
 
+navigateToProduct(id: number): void {
+  this.router.navigate(['/product', id]).then(() => window.scrollTo(0, 0));
+}
 
-  // Método para manejar clics en productos similares
-  navigateToProduct(id: number): void {
-    this.router.navigate(['/product', id])
-      .then(() => {
-        window.scrollTo(0, 0); // Opcional: scroll al inicio
-      });
-  }
+  
 }
