@@ -1,0 +1,14 @@
+<nav class="flex justify-between items-center px-6 py-4 bg-gray-100 border-b border-gray-300">
+  <div *ngIf="user && user.nombre" class="text-gray-800 font-semibold">
+    Bienvenido, {{ user.nombre }}
+  </div>
+
+  <div>
+    <button 
+      (click)="logout()" 
+      class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded transition-colors duration-200"
+    >
+      Cerrar Sesión
+    </button>
+  </div>
+</nav>

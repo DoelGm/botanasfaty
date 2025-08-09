@@ -12,6 +12,11 @@ import { UsersTableComponent } from './components/admin/users-table/users-table.
 import { NewCustumerComponent } from './components/admin/new-custumer/new-custumer.component';
 import { CustumersTableComponent } from './components/admin/custumers-table/custumers-table.component';
 import { CatalogComponent } from './pages/public/catalog/catalog.component';
+import { UserLayoutsComponent } from './layouts/user-layouts/user-layouts.component';
+import { UsersComponent } from './pages/user/users/users.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
+import { RegisterComponent } from './pages/auth/register/register.component';
 
 export const routes: Routes = [
 
@@ -22,13 +27,16 @@ export const routes: Routes = [
             {path: '', component: HomeComponent},
             {path: 'catalog', component: CatalogComponent },
             {path: 'oferts', component: OfertsComponent},
-            {path: 'product/:id', component: ProductComponent }
+            {path: 'product/:id', component: ProductComponent },
+            {path: 'login', component: LoginComponent },
+            {path: 'register', component: RegisterComponent}
 
         ]
     },
     {
         path: 'admin',
         component: AdminLayoutsComponent,
+        canActivate: [AuthGuard],
         children: [
             {path: '', component: DashoboardComponent},
             {path: 'productos/nuevo', component: NewProductComponent},
@@ -41,5 +49,13 @@ export const routes: Routes = [
 
 
         ]
-    }
+    },
+    {
+  path: 'user',
+  component: UserLayoutsComponent,
+    canActivate: [AuthGuard], // Aquí puedes agregar un guard si es necesario
+  children: [
+    { path: '', component: UsersComponent },
+  ]
+}
 ];
